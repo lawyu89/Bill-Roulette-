@@ -5,4 +5,3 @@ gem 'sqlite3'
 gem 'faker'
 gem 'rspec'
 gem 'rake'
-gem ‘twilio-ruby’

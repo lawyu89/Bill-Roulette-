@@ -6,12 +6,14 @@ class Controller
     @id = args[:id]
     @numbers = args[:numbers]
     Group.connection
-    begin
-      @numbers ? send(@command) : send(@command)
-    #rescue ArgumentError => err
-      puts 'Please enter phone numbers!'
-    #rescue NoMethodError => err
-      puts 'Please enter a valid command!'
+    if @command == "addgroup"
+      addgroup
+    elsif @command == "addusers" && @id && @numbers
+      addusers
+    elsif @command == "pay" && @id
+      pay
+    else
+      puts "Command not found, please try again!"
     end
   end
 
@@ -22,18 +24,21 @@ class Controller
   end
 
   def addusers
-    group = Group.find(@id)
     @numbers.each do |number|
       user = User.new(phone: number)
-      user.group_ids = group.id
+      user.group_ids = @id
       user.save
     end
   end
 
   def pay
-
-    current_group = Group.users.where(group_ids: @id)
-    person = current_group.sample
-    @group.pay(person.phone)
+    users = User.all
+    group = []
+    users.each do |user|
+      group << user if user.group_ids = @id
+    end
+    p person = group.sample
+    p person.phone
+    Group.pay(person.phone)
   end
 end
