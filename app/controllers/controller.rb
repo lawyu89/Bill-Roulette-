@@ -2,10 +2,10 @@ require_relative '../../config/application'
 
 class Controller
   def initialize(args)
-    @command = args[:command]
-    @id = args[:id]
-    @numbers = args[:numbers]
-    Group.connection
+   @command = args[:command]
+   @id = args[:id]
+   @numbers = args[:numbers]
+
     if @command == "addgroup"
       addgroup
     elsif @command == "addusers" && @id && @numbers
@@ -13,7 +13,7 @@ class Controller
     elsif @command == "pay" && @id
       pay
     else
-      puts "Command not found, please try again!"
+      puts "Command Invalid, Please Try Again!"
     end
   end
 
@@ -26,6 +26,7 @@ class Controller
   def addusers
     @numbers.each do |number|
       user = User.new(phone: number)
+      user.save
       user.group_ids = @id
       user.save
     end
@@ -33,12 +34,13 @@ class Controller
 
   def pay
     users = User.all
+
     group = []
     users.each do |user|
       group << user if user.group_ids = @id
     end
-    p person = group.sample
-    p person.phone
+    person = group.sample
+    person.phone
     Group.pay(person.phone)
   end
 end
